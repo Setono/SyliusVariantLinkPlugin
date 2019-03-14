@@ -1,0 +1,7 @@
+default:
+    suites:
+        greeting_customer:
+            contexts:
+
+            filters:
+                tags: "@greeting_customer"
