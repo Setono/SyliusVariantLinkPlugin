@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusVariantLinkPlugin\EventListener;
 
+use Setono\SyliusVariantLinkPlugin\Request\VariantIdentifierTrait;
 use Setono\SyliusVariantLinkPlugin\Resolver\ProductVariantResolverInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\ProductInterface;
@@ -11,8 +12,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-final class ShowProductSubscriber implements EventSubscriberInterface
+final class VariantExistsSubscriber implements EventSubscriberInterface
 {
+    use VariantIdentifierTrait;
+
     /**
      * @var ProductVariantResolverInterface
      */
@@ -51,11 +54,11 @@ final class ShowProductSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if(!$request->attributes->has('variant_identifier')) {
+        if($this->hasVariantIdentifier($request)) {
             return;
         }
 
-        $identifier = $request->attributes->get('variant_identifier');
+        $identifier = $this->getVariantIdentifier($request);
 
         $productVariant = $this->productVariantResolver->resolve($product, $identifier);
 

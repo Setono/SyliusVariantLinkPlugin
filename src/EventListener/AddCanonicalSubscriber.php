@@ -6,12 +6,15 @@ namespace Setono\SyliusVariantLinkPlugin\EventListener;
 
 use Fig\Link\GenericLinkProvider;
 use Fig\Link\Link;
+use Setono\SyliusVariantLinkPlugin\Request\VariantIdentifierTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
 final class AddCanonicalSubscriber implements EventSubscriberInterface
 {
+    use VariantIdentifierTrait;
+
     /**
      * @var RequestStack
      */
@@ -31,7 +34,7 @@ final class AddCanonicalSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            'setono_sylius_variant_link.product_variant.show' => [
+            'sylius.product.show' => [
                 'onShow',
             ],
         ];
@@ -41,6 +44,10 @@ final class AddCanonicalSubscriber implements EventSubscriberInterface
     {
         $request = $this->requestStack->getMasterRequest();
         if(null === $request) {
+            return;
+        }
+
+        if(!$this->hasVariantIdentifier($request)) {
             return;
         }
 

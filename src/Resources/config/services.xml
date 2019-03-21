@@ -6,14 +6,7 @@
 
         <service id="setono_sylius_variant_link.resolver.product_variant_by_code" class="Setono\SyliusVariantLinkPlugin\Resolver\ProductVariantByCodeResolver"/>
 
-        <service id="setono_sylius_variant_link.controller.action.show_product_variant" class="Setono\SyliusVariantLinkPlugin\Controller\Action\ShowProductVariantAction">
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="http_kernel"/>
-            <argument type="service" id="event_dispatcher"/>
-            <tag name="controller.service_arguments"/>
-        </service>
-
-        <service id="Setono\SyliusVariantLinkPlugin\EventListener\ShowProductSubscriber">
+        <service id="Setono\SyliusVariantLinkPlugin\EventListener\VariantExistsSubscriber">
             <argument type="service" id="setono_sylius_variant_link.resolver.product_variant.default"/>
             <argument type="service" id="request_stack"/>
             <tag name="kernel.event_subscriber"/>
