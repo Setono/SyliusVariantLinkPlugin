@@ -3,7 +3,3 @@ setono_sylius_variant_link_shop:
     prefix: /{_locale}
     requirements:
         _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
-
-setono_sylius_variant_link_admin:
-    resource: "@SetonoSyliusVariantLinkPlugin/Resources/config/admin_routing.yml"
-    prefix: /admin
