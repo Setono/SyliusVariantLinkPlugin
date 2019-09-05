@@ -12,10 +12,6 @@ interface ProductVariantResolverInterface
     /**
      * Will try to resolve a product variant on the product from the given identifier
      * If no variant exists on the product for this identifier it returns null
-     *
-     * @param ProductInterface $product
-     * @param string $identifier
-     * @return ProductVariantInterface|null
      */
     public function resolve(ProductInterface $product, string $identifier): ?ProductVariantInterface;
 }

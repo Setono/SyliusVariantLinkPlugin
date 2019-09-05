@@ -15,14 +15,10 @@ final class AddCanonicalSubscriber implements EventSubscriberInterface
 {
     use VariantIdentifierTrait;
 
-    /**
-     * @var RequestStack
-     */
+    /** @var RequestStack */
     private $requestStack;
 
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     private $router;
 
     public function __construct(RequestStack $requestStack, RouterInterface $router)
@@ -43,16 +39,16 @@ final class AddCanonicalSubscriber implements EventSubscriberInterface
     public function onShow(): void
     {
         $request = $this->requestStack->getMasterRequest();
-        if(null === $request) {
+        if (null === $request) {
             return;
         }
 
-        if(!$this->hasVariantIdentifier($request)) {
+        if (!$this->hasVariantIdentifier($request)) {
             return;
         }
 
         $uri = $this->router->generate('sylius_shop_product_show', [
-            'slug' => $request->attributes->get('slug')
+            'slug' => $request->attributes->get('slug'),
         ], RouterInterface::ABSOLUTE_URL);
 
         $link = new Link('canonical', $uri);

@@ -16,14 +16,10 @@ final class VariantExistsSubscriber implements EventSubscriberInterface
 {
     use VariantIdentifierTrait;
 
-    /**
-     * @var ProductVariantResolverInterface
-     */
+    /** @var ProductVariantResolverInterface */
     private $productVariantResolver;
 
-    /**
-     * @var RequestStack
-     */
+    /** @var RequestStack */
     private $requestStack;
 
     public function __construct(ProductVariantResolverInterface $productVariantResolver, RequestStack $requestStack)
@@ -45,16 +41,16 @@ final class VariantExistsSubscriber implements EventSubscriberInterface
     {
         $product = $event->getSubject();
 
-        if(!$product instanceof ProductInterface) {
+        if (!$product instanceof ProductInterface) {
             return;
         }
 
         $request = $this->requestStack->getCurrentRequest();
-        if(null === $request) {
+        if (null === $request) {
             return;
         }
 
-        if($this->hasVariantIdentifier($request)) {
+        if ($this->hasVariantIdentifier($request)) {
             return;
         }
 
@@ -62,7 +58,7 @@ final class VariantExistsSubscriber implements EventSubscriberInterface
 
         $productVariant = $this->productVariantResolver->resolve($product, $identifier);
 
-        if(null === $productVariant) {
+        if (null === $productVariant) {
             throw new NotFoundHttpException(sprintf('The product %s does not have a variant identified by %s', $product->getCode(), $identifier));
         }
     }

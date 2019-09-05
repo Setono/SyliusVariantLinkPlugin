@@ -11,8 +11,9 @@ final class ProductVariantByCodeResolver implements ProductVariantResolverInterf
 {
     public function resolve(ProductInterface $product, string $identifier): ?ProductVariantInterface
     {
+        /** @var ProductVariantInterface $variant */
         foreach ($product->getVariants() as $variant) {
-            if($variant->getCode() === $identifier) {
+            if ($variant->getCode() === $identifier) {
                 return $variant;
             }
         }
