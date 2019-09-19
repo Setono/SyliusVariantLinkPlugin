@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="setono_sylius_variant_link.resolver.product_variant.default" alias="setono_sylius_variant_link.resolver.product_variant_by_code"/>
+        <service id="setono_sylius_variant_link.resolver.product_variant_from_identifier.default"
+                 alias="Setono\SyliusVariantLinkPlugin\Resolver\ProductVariantFromIdentifierResolverInterface"/>
 
-        <service id="setono_sylius_variant_link.resolver.product_variant_by_code" class="Setono\SyliusVariantLinkPlugin\Resolver\ProductVariantByCodeResolver"/>
+        <service id="Setono\SyliusVariantLinkPlugin\Resolver\ProductVariantFromIdentifierResolverInterface"
+                 alias="setono_sylius_variant_link.resolver.product_variant_from_code"/>
+
+        <service id="setono_sylius_variant_link.resolver.product_variant_from_code"
+                 class="Setono\SyliusVariantLinkPlugin\Resolver\ProductVariantFromCodeResolver"/>
 
         <service id="Setono\SyliusVariantLinkPlugin\EventListener\VariantExistsSubscriber">
-            <argument type="service" id="setono_sylius_variant_link.resolver.product_variant.default"/>
+            <argument type="service" id="setono_sylius_variant_link.resolver.product_variant_from_identifier.default"/>
             <argument type="service" id="request_stack"/>
             <tag name="kernel.event_subscriber"/>
         </service>
@@ -16,6 +22,14 @@
             <argument type="service" id="request_stack"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="setono_sylius_variant_link.resolver.request_based_product_variant"
+                 class="Setono\SyliusVariantLinkPlugin\Resolver\RequestBasedProductVariantResolver"
+                 decorates="sylius.product_variant_resolver.default">
+            <argument type="service" id="setono_sylius_variant_link.resolver.request_based_product_variant.inner"/>
+            <argument type="service" id="setono_sylius_variant_link.resolver.product_variant_from_identifier.default"/>
+            <argument type="service" id="request_stack"/>
         </service>
     </services>
 </container>

@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <defaults public="true" />
-        <!-- Put your Behat services here -->
+        <defaults public="true"/>
 
+        <service id="setono_sylius_variant_link.behat.page.shop.product.show"
+                 class="Tests\Setono\SyliusVariantLinkPlugin\Behat\Page\Shop\Product\ShowPage"
+                 parent="sylius.behat.page.shop.product.show" public="true"/>
+
+        <service id="setono_sylius_variant_link.behat.context.ui.shop.product_variant"
+                 class="Tests\Setono\SyliusVariantLinkPlugin\Behat\Context\Ui\Shop\ProductVariantContext">
+            <argument type="service" id="setono_sylius_variant_link.behat.page.shop.product.show"/>
+        </service>
+
+        <service id="setono_sylius_variant_link.behat.context.transform.product_variant"
+                 class="Tests\Setono\SyliusVariantLinkPlugin\Behat\Context\Transform\ProductVariantContext">
+            <argument type="service" id="sylius.repository.product_variant"/>
+        </service>
     </services>
 </container>

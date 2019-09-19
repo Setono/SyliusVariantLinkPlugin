@@ -7,7 +7,7 @@ namespace Setono\SyliusVariantLinkPlugin\Resolver;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-interface ProductVariantResolverInterface
+interface ProductVariantFromIdentifierResolverInterface
 {
     /**
      * Will try to resolve a product variant on the product from the given identifier
