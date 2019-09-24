@@ -56,6 +56,8 @@ setono_sylius_variant_link:
 {{ path('setono_sylius_variant_link_shop_product_variant_show', {'slug': product.slug, 'variant_identifier': variant.code}) }}
 ```
 
+See [example](tests/Application/templates/bundles/SyliusShopBundle/Product/_box.html.twig).
+
 ### View a product
 If you have a product with slug `product-1` which has a variant with code `variant-code-1` the above twig statement will return
 `/en_US/products/product-1/variant-code-1` on a default Sylius installation.
