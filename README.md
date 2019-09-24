@@ -7,6 +7,10 @@
 
 In a standard Sylius shop it is not possible to link directly to variants. That problem is what this plugin solves.
 
+![Screenshot showing products list with variants links](docs/images/shop-product-list-with-variant-links.png)
+
+![Screenshot showing product show page with variant selected](docs/images/shop-product-show-variant.png)
+
 ## Installation
 
 ### Step 1: Download the plugin
@@ -37,6 +41,14 @@ return [
 ];
 ```
 
+### Step 3: Import routing
+
+```yaml
+# config/routes/setono_sylius_variant_link.yaml
+setono_sylius_variant_link:
+    resource: "@SetonoSyliusVariantLinkPlugin/Resources/config/routes.yaml"
+```
+
 ## Usage
 
 ### Link to a variant
@@ -47,6 +59,8 @@ return [
 
 {{ path('setono_sylius_variant_link_shop_product_variant_show', {'slug': product.slug, 'variant_identifier': variant.code}) }}
 ```
+
+See [example](tests/Application/templates/bundles/SyliusShopBundle/Product/_box.html.twig).
 
 ### View a product
 If you have a product with slug `product-1` which has a variant with code `variant-code-1` the above twig statement will return

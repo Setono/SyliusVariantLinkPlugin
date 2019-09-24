@@ -1,0 +1,2 @@
+setono_sylius_variant_link:
+    resource: "@SetonoSyliusVariantLinkPlugin/Resources/config/routes.yaml"
