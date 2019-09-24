@@ -37,6 +37,14 @@ return [
 ];
 ```
 
+### Step 3: Import routing
+
+```yaml
+# config/routes/setono_sylius_variant_link.yaml
+setono_sylius_variant_link:
+    resource: "@SetonoSyliusVariantLinkPlugin/Resources/config/routes.yaml"
+```
+
 ## Usage
 
 ### Link to a variant
