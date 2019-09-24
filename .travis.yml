@@ -70,7 +70,8 @@ script:
     - composer normalize --dry-run
     - composer check-style
     - composer analyse
-    - composer test
+    - composer phpspec
+    - composer phpunit
 
     - vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun
 
