@@ -1,0 +1,14 @@
+{#
+    This file is much like Sylius' file:
+
+    vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/Product/Show/_variantsPricing.html.twig
+#}
+
+{# @var \Sylius\Component\Core\Model\ProductVariantInterface[] variants #}
+<div id="setono-variant-links" style="display: none">
+    {% for variant in variants %}
+        <div {% for optionValue in variant.optionValues %}data-{{ optionValue.optionCode }}="{{ optionValue.code }}" {% endfor %}
+             data-value="{{ setono_variant_link(variant) }}"
+             data-variant-code="{{ variant.code }}"></div>
+    {% endfor %}
+</div>

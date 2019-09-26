@@ -15,12 +15,14 @@
         <service id="Setono\SyliusVariantLinkPlugin\EventListener\VariantExistsSubscriber">
             <argument type="service" id="setono_sylius_variant_link.resolver.product_variant_from_identifier.default"/>
             <argument type="service" id="request_stack"/>
+
             <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="Setono\SyliusVariantLinkPlugin\EventListener\AddCanonicalSubscriber">
             <argument type="service" id="request_stack"/>
             <argument type="service" id="router"/>
+
             <tag name="kernel.event_subscriber"/>
         </service>
 
@@ -30,6 +32,24 @@
             <argument type="service" id="setono_sylius_variant_link.resolver.request_based_product_variant.inner"/>
             <argument type="service" id="setono_sylius_variant_link.resolver.product_variant_from_identifier.default"/>
             <argument type="service" id="request_stack"/>
+        </service>
+
+        <service id="setono_sylius_variant_link.url_generator.product_variant.default"
+                 alias="Setono\SyliusVariantLinkPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface"/>
+
+        <service id="Setono\SyliusVariantLinkPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface"
+                 alias="setono_sylius_variant_link.url_generator.product_variant_from_code"/>
+
+        <service id="setono_sylius_variant_link.url_generator.product_variant_from_code"
+                 class="Setono\SyliusVariantLinkPlugin\UrlGenerator\ProductVariantFromCodeUrlGenerator">
+            <argument type="service" id="router"/>
+        </service>
+
+        <service id="setono_sylius_variant_link.twig.product_variant_link_extension"
+                 class="Setono\SyliusVariantLinkPlugin\Twig\ProductVariantLinkExtension">
+            <argument type="service" id="setono_sylius_variant_link.url_generator.product_variant.default"/>
+
+            <tag name="twig.extension"/>
         </service>
     </services>
 </container>

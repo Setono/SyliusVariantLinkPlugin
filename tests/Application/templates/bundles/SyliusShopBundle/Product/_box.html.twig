@@ -20,7 +20,7 @@
             {% if product.variants.count > 1 %}
                 {% for variant in product.variants %}
                     &middot;
-                    <a href="{{ path('setono_sylius_variant_link_shop_product_variant_show', {'slug': product.slug, 'variant_identifier': variant.code}) }}">
+                    <a href="{{ setono_variant_link(variant) }}">
                         {{ variant.name }}
                     </a>
                 {% endfor %}

@@ -49,15 +49,54 @@ setono_sylius_variant_link:
     resource: "@SetonoSyliusVariantLinkPlugin/Resources/config/routes.yaml"
 ```
 
+### Step 4: Install assets
+```bash
+$ php bin/console assets:install
+```
+
+### Step 5: Override product show template
+Start by copying the file `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/Product/show.html.twig` to
+`templates/bundles/SyliusShopBundle/Product/show.html.twig`
+
+Here are two commands that will do just that (only do this if you haven't overridden this template yet):
+```bash
+$ mkdir -p templates/bundles/SyliusShopBundle/Product
+$ cp vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/Product/show.html.twig templates/bundles/SyliusShopBundle/Product
+```
+
+In the template we need three things:
+1. Include a template
+2. Include a javascript file
+3. Run a javascript function
+
+**1. Include variant links template**
+
+Add this twig line within the `content` block: `{% include '@SetonoSyliusVariantLinkPlugin/_variantLinks.html.twig' with {'variants': product.variants} %}`
+
+**2 and 3. Include javascript file and run function**
+
+In the `javascripts` block append this:
+
+```twig
+{% include 'SyliusUiBundle::_javascripts.html.twig' with {'path': 'bundles/setonosyliusvariantlinkplugin/js/setono-variant-links.js'} %}
+
+<script>
+    $(function() {
+        $(document).variantLinks();
+    });
+</script>
+```
+
+See [this file](tests/Application/templates/bundles/SyliusShopBundle/Product/show.html.twig) for an example of these three changes.
+
 ## Usage
 
 ### Link to a variant
 
 ```twig
-{# @var \Sylius\Component\Core\Model\ProductInterface product #}
 {# @var \Sylius\Component\Core\Model\ProductVariantInterface variant #}
 
-{{ path('setono_sylius_variant_link_shop_product_variant_show', {'slug': product.slug, 'variant_identifier': variant.code}) }}
+{{ setono_variant_link(variant) }}
 ```
 
 See [example](tests/Application/templates/bundles/SyliusShopBundle/Product/_box.html.twig).
@@ -91,7 +130,11 @@ Easy peasy!
 Let's say you have a store with clothes and you want to use the size of clothes in the URL to determine the variant.
 You want to end up with URLs like `/en_US/products/product-1/medium`.
 
-All you need to do is to create a new `ProductVariantFromIdentifierResolver`:
+To do this you need to implement two interfaces:
+- [ProductVariantFromIdentifierResolverInterface](src/Resolver/ProductVariantFromIdentifierResolverInterface.php)
+- [ProductVariantUrlGeneratorInterface](src/UrlGenerator/ProductVariantUrlGeneratorInterface.php)
+ 
+**Implementing ProductVariantFromIdentifierResolverInterface**
 
 ```php
 <?php
@@ -134,7 +177,52 @@ Now define the service:
 </container>
 ```
 
-If you're using autowiring you only need the alias.
+**Implementing ProductVariantUrlGeneratorInterface**
+
+```php
+<?php
+namespace App\UrlGenerator;
+
+use Setono\SyliusVariantLinkPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+final class ProductVariantFromSizeUrlGenerator implements ProductVariantUrlGeneratorInterface
+{
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
+    
+    public function generate(ProductVariantInterface $productVariant, bool $absolute = false) : string{
+        return $this->urlGenerator->generate('setono_sylius_variant_link_shop_product_variant_show', [
+            'slug' => $productVariant->getProduct()->getSlug(),
+            'variant_identifier' => $productVariant->getOptionValues()->first()->getCode(),
+        ], $absolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH);
+    }
+}
+```
+
+Now define the service:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="Setono\SyliusVariantLinkPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface"
+                 alias="app.url_generator.product_variant_from_size"/>
+
+        <service id="app.url_generator.product_variant_from_size" class="App\UrlGenerator\ProductVariantFromSizeUrlGenerator"/>
+    </services>
+</container>
+```
+
+Notice that if you're using autowiring you only need the aliases.
 
 [ico-version]: https://img.shields.io/packagist/v/setono/sylius-variant-link-plugin.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
