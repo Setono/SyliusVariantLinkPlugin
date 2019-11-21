@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Setono\SyliusVariantLinkPlugin\EventListener;
 
-use Fig\Link\GenericLinkProvider;
-use Fig\Link\Link;
 use Psr\Link\EvolvableLinkProviderInterface;
 use Setono\SyliusVariantLinkPlugin\Request\VariantIdentifierTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\WebLink\GenericLinkProvider;
+use Symfony\Component\WebLink\Link;
 
 /**
  * This class will add a canonical header from variant urls to their respective product urls
