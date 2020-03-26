@@ -1,4 +1,3 @@
-# @deprecated Do not import this file directly - import routes.yaml instead
 setono_sylius_variant_link_shop_product_variant_show:
     path: /products/{slug}/{variant_identifier}
     methods: [GET]

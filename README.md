@@ -94,9 +94,10 @@ See [this file](tests/Application/templates/bundles/SyliusShopBundle/Product/sho
 ### Link to a variant
 
 ```twig
-{# @var \Sylius\Component\Core\Model\ProductVariantInterface variant #}
+{# @var \Sylius\Component\Product\Model\ProductVariantInterface variant #}
 
-{{ setono_variant_link(variant) }}
+{{ setono_variant_path(variant) }} {# Works as Symfonys path() function a returns an absolute path #}
+{{ setono_variant_url(variant) }} {# Works as Symfonys url() function a returns an absolute url #}
 ```
 
 See [example](tests/Application/templates/bundles/SyliusShopBundle/Product/_box.html.twig).
@@ -184,7 +185,7 @@ Now define the service:
 namespace App\UrlGenerator;
 
 use Setono\SyliusVariantLinkPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Product\Model\ProductVariantInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class ProductVariantFromSizeUrlGenerator implements ProductVariantUrlGeneratorInterface
@@ -197,11 +198,19 @@ final class ProductVariantFromSizeUrlGenerator implements ProductVariantUrlGener
         $this->urlGenerator = $urlGenerator;
     }
     
-    public function generate(ProductVariantInterface $productVariant, bool $absolute = false) : string{
-        return $this->urlGenerator->generate('setono_sylius_variant_link_shop_product_variant_show', [
+    public function generate(
+        ProductVariantInterface $productVariant,
+        array $parameters = [],
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    ) : string{
+        $parameters = array_merge($parameters, [
             'slug' => $productVariant->getProduct()->getSlug(),
             'variant_identifier' => $productVariant->getOptionValues()->first()->getCode(),
-        ], $absolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH);
+        ]);
+
+        return $this->urlGenerator->generate(
+            'setono_sylius_variant_link_shop_product_variant_show', $parameters, $referenceType
+        );
     }
 }
 ```
@@ -224,10 +233,10 @@ Now define the service:
 
 Notice that if you're using autowiring you only need the aliases.
 
-[ico-version]: https://img.shields.io/packagist/v/setono/sylius-variant-link-plugin.svg?style=flat-square
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/setono/sylius-variant-link-plugin.svg
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [ico-travis]: https://travis-ci.com/Setono/SyliusVariantLinkPlugin.svg?branch=master
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/Setono/SyliusVariantLinkPlugin.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/Setono/SyliusVariantLinkPlugin.svg
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-variant-link-plugin
 [link-travis]: https://travis-ci.com/Setono/SyliusVariantLinkPlugin
