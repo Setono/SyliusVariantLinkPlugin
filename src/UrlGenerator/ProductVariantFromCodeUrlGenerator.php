@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusVariantLinkPlugin\UrlGenerator;
 
-use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Product\Model\ProductVariantInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Webmozart\Assert\Assert;
 
