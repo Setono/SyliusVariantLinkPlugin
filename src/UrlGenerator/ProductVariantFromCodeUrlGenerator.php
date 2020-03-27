@@ -18,14 +18,21 @@ final class ProductVariantFromCodeUrlGenerator implements ProductVariantUrlGener
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function generate(ProductVariantInterface $productVariant, bool $absolute = false): string
-    {
+    public function generate(
+        ProductVariantInterface $productVariant,
+        array $parameters = [],
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    ): string {
         $product = $productVariant->getProduct();
         Assert::notNull($product);
 
-        return $this->urlGenerator->generate('setono_sylius_variant_link_shop_product_variant_show', [
+        $parameters = array_merge($parameters, [
             'slug' => $product->getSlug(),
             'variant_identifier' => $productVariant->getCode(),
-        ], $absolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH);
+        ]);
+
+        return $this->urlGenerator->generate(
+            'setono_sylius_variant_link_shop_product_variant_show', $parameters, $referenceType
+        );
     }
 }

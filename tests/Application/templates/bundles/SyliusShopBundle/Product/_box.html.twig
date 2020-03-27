@@ -20,7 +20,7 @@
             {% if product.variants.count > 1 %}
                 {% for variant in product.variants %}
                     &middot;
-                    <a href="{{ setono_variant_link(variant) }}">
+                    <a href="{{ setono_variant_path(variant) }}">
                         {{ variant.name }}
                     </a>
                 {% endfor %}
