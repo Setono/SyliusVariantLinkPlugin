@@ -28,7 +28,8 @@
 
         <service id="setono_sylius_variant_link.resolver.request_based_product_variant"
                  class="Setono\SyliusVariantLinkPlugin\Resolver\RequestBasedProductVariantResolver"
-                 decorates="sylius.product_variant_resolver.default">
+                 decorates="sylius.product_variant_resolver.default"
+                 decoration-priority="256">
             <argument type="service" id="setono_sylius_variant_link.resolver.request_based_product_variant.inner"/>
             <argument type="service" id="setono_sylius_variant_link.resolver.product_variant_from_identifier.default"/>
             <argument type="service" id="request_stack"/>
