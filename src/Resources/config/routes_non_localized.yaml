@@ -1,0 +1,2 @@
+setono_sylius_variant_link_shop:
+    resource: "@SetonoSyliusVariantLinkPlugin/Resources/config/routes/shop.yaml"
