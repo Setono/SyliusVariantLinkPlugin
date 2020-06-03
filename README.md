@@ -7,9 +7,15 @@
 
 In a standard Sylius shop it is not possible to link directly to variants. That problem is what this plugin solves.
 
+## Screenshots
+
+<details><summary>CLICK TO SEE</summary>
+
 ![Screenshot showing products list with variants links](docs/images/shop-product-list-with-variant-links.png)
 
 ![Screenshot showing product show page with variant selected](docs/images/shop-product-show-variant.png)
+
+</details>
 
 ## Installation
 
