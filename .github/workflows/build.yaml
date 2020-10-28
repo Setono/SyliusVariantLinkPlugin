@@ -1,51 +1,287 @@
-name: build
+name: "build"
 on:
-    push: ~
+    push:
+        branches:
+            - "master"
     pull_request: ~
     schedule:
-        - cron: 5 8 * * 3
+        - cron: "5 8 * * 1"
+
+env:
+    APP_ENV: "test"
+    DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=5.7"
+    PHP_EXTENSIONS: "intl, mbstring"
+
 jobs:
-    checks:
-        name: PHP ${{ matrix.php-versions }}
-        runs-on: ${{ matrix.operating-system }}
+    coding-standards:
+        name: "Coding Standards"
+
+        runs-on: "ubuntu-latest"
+
         strategy:
-            fail-fast: false
             matrix:
-                operating-system: [ubuntu-latest]
-                php-versions: ['7.3', '7.4']
+                php-version:
+                    - "7.3"
+                    - "7.4"
+
+                dependencies:
+                    - "highest"
+
         steps:
-            -   name: Start MySQL
-                run: sudo /etc/init.d/mysql start
-            -   name: Set environment variables
-                run: |
-                    echo "::set-env name=APP_ENV::test"
-                    echo "::set-env name=DATABASE_URL::mysql://root:root@127.0.0.1/sylius?serverVersion=5.7"
-            -   name: Checkout
-                uses: actions/checkout@v1
-            -   name: Setup PHP, with composer and extensions
-                uses: shivammathur/setup-php@v2
+            -   name: "Checkout"
+                uses: "actions/checkout@v2"
+
+            -   name: "Setup PHP, with composer and extensions"
+                uses: "shivammathur/setup-php@v2"
                 with:
-                    php-version: ${{ matrix.php-versions }}
-                    extensions: intl
-            -   name: Install Composer dependencies
-                run: composer update --no-progress --no-suggest --prefer-dist --no-interaction
-            -   name: Validate composer
-                run: composer validate --strict
-            -   name: Check composer normalized
-                run: composer normalize --dry-run
-            -   name: Check style
-                run: composer check-style
-            -   name: Static analysis
-                run: composer analyse
-            -   name: Run phpspec
-                run: composer phpspec
-            -   name: Run phpunit
-                run: composer phpunit
-            -   name: Setup database, assets and cache
+                    php-version: "${{ matrix.php-version }}"
+                    extensions: "${{ env.PHP_EXTENSIONS }}"
+                    coverage: "none"
+
+            -   name: "Install composer dependencies"
+                uses: "ramsey/composer-install@v1"
+                with:
+                    dependency-versions: "${{ matrix.dependencies }}"
+
+            -   name: "Validate composer"
+                run: "composer validate --strict"
+
+            -   name: "Check composer normalized"
+                run: "composer normalize --dry-run"
+
+            -   name: "Check style"
+                run: "composer check-style"
+
+            -   name: "Lint yaml files"
+                run: "(cd tests/Application && bin/console lint:yaml ../../src/Resources)"
+
+            -   name: "Lint twig files"
+                run: "(cd tests/Application && bin/console lint:twig ../../src/Resources)"
+
+    dependency-analysis:
+        name: "Dependency Analysis"
+
+        runs-on: "ubuntu-latest"
+
+        strategy:
+            matrix:
+                php-version:
+                    - "7.4"
+
+                dependencies:
+                    - "highest"
+
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v2.3.2"
+
+            -   name: "Setup PHP, with composer and extensions"
+                uses: "shivammathur/setup-php@2.5.0"
+                with:
+                    coverage: "none"
+                    extensions: "${{ env.PHP_EXTENSIONS }}"
+                    php-version: "${{ matrix.php-version }}"
+                    tools: "composer-require-checker, composer-unused"
+
+            -   name: "Install composer dependencies"
+                uses: "ramsey/composer-install@v1"
+                with:
+                    dependency-versions: "${{ matrix.dependencies }}"
+
+            -   name: "Run maglnet/composer-require-checker"
+                run: "composer-require-checker check --config-file=$(pwd)/composer-require-checker.json"
+
+            -   name: "Run composer-unused/composer-unused"
+                run: "composer-unused"
+
+    static-code-analysis:
+        name: "Static Code Analysis"
+
+        runs-on: "ubuntu-latest"
+
+        strategy:
+            matrix:
+                php-version:
+                    - "7.3"
+                    - "7.4"
+
+                dependencies:
+                    - "highest"
+
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v2"
+
+            -   name: "Setup PHP, with composer and extensions"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+                    extensions: "${{ env.PHP_EXTENSIONS }}"
+                    coverage: "none"
+
+            -   name: "Install composer dependencies"
+                uses: "ramsey/composer-install@v1"
+                with:
+                    dependency-versions: "${{ matrix.dependencies }}"
+
+            -   name: "Static analysis"
+                run: "composer analyse"
+
+    unit-tests:
+        name: "Unit tests"
+
+        runs-on: "ubuntu-latest"
+
+        strategy:
+            matrix:
+                php-version:
+                    - "7.3"
+                    - "7.4"
+
+                dependencies:
+                    - "lowest"
+                    - "highest"
+
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v2"
+
+            -   name: "Setup PHP, with composer and extensions"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+                    extensions: "${{ env.PHP_EXTENSIONS }}"
+                    coverage: "none"
+
+            -   name: "Install composer dependencies"
+                uses: "ramsey/composer-install@v1"
+                with:
+                    dependency-versions: "${{ matrix.dependencies }}"
+
+            -   name: "Run phpspec"
+                run: "composer phpspec"
+
+            -   name: "Run phpunit"
+                run: "composer phpunit"
+
+    integration-tests:
+        name: "Integration tests"
+
+        runs-on: "ubuntu-latest"
+
+        strategy:
+            matrix:
+                php-version:
+                    - "7.3"
+                    - "7.4"
+
+                dependencies:
+                    - "highest"
+
+        steps:
+            -   name: "Start MySQL"
+                run: "sudo /etc/init.d/mysql start"
+
+            -   name: "Checkout"
+                uses: "actions/checkout@v2"
+
+            -   name: "Setup PHP, with composer and extensions"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+                    extensions: "${{ env.PHP_EXTENSIONS }}"
+                    coverage: "none"
+                    tools: "symfony"
+
+            -   name: "Install composer dependencies"
+                uses: "ramsey/composer-install@v1"
+                with:
+                    dependency-versions: "${{ matrix.dependencies }}"
+
+            # Removed linting until this issue is fixed: https://github.com/symfony/symfony/issues/38056
+            #-   name: "Lint container"
+            #    run: "(cd tests/Application && bin/console lint:container)"
+
+            -   name: "Create database"
+                run: "(cd tests/Application && bin/console doctrine:database:create -vvv)"
+
+            -   name: "Create database schema"
+                run: "(cd tests/Application && bin/console doctrine:schema:create -vvv)"
+
+            -   name: "Validate Doctrine mapping"
+                run: "(cd tests/Application && bin/console doctrine:schema:validate -vvv)"
+                
+            -   name: "Output PHP version"
+                run: "php -v | head -n 1 | awk '{print $2}' > .php-version"
+
+            -   name: "Install certificates"
+                run: "symfony server:ca:install"
+
+            -   name: "Run Chrome headless"
+                run: "google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1 > /dev/null 2>&1 &"
+
+            -   name: "Wait for Chrome to start"
                 run: |
-                    (cd tests/Application && bin/console doctrine:database:create -vvv)
-                    (cd tests/Application && bin/console doctrine:schema:create -vvv)
-                    (cd tests/Application && bin/console assets:install public -vvv)
-                    (cd tests/Application && bin/console cache:warmup -vvv)
-            -   name: Run behat without javascript
-                run: vendor/bin/behat --strict -vvv --no-interaction --tags="~@javascript" || vendor/bin/behat --strict -vvv --no-interaction --tags="~@javascript" --rerun
+                    until curl -s http://127.0.0.1:9222/json/version | grep "Browser" > /dev/null 2>&1
+                    do
+                        sleep 1
+                    done
+
+            -   name: "Start webserver"
+                run: "(cd tests/Application && symfony server:start --port=8080 --dir=public --daemon)"
+
+            -   name: "Wait for webserver to start"
+                run: |
+                    until symfony server:list | grep /public > /dev/null 2>&1
+                    do
+                        sleep 1
+                    done
+
+            -   name: "Run behat"
+                run: "vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun"
+
+            -   uses: "actions/upload-artifact@v2.2.0"
+                if: "failure()"
+                with:
+                    name: "logs"
+                    path: "etc/build"
+    
+    code-coverage:
+        name: "Code Coverage"
+
+        runs-on: "ubuntu-latest"
+
+        strategy:
+            matrix:
+                php-version:
+                    - "7.4"
+
+                dependencies:
+                    - "highest"
+
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v2.3.2"
+
+            -   name: "Setup PHP, with composer and extensions"
+                uses: "shivammathur/setup-php@2.5.0"
+                with:
+                    coverage: "pcov"
+                    extensions: "${{ env.PHP_EXTENSIONS }}"
+                    php-version: "${{ matrix.php-version }}"
+
+            -   name: "Set up problem matchers for phpunit/phpunit"
+                run: "echo \"::add-matcher::${{ runner.tool_cache }}/phpunit.json\""
+
+            -   name: "Install composer dependencies"
+                uses: "ramsey/composer-install@v1"
+                with:
+                    dependency-versions: "${{ matrix.dependencies }}"
+
+            -   name: "Collect code coverage with pcov and phpunit/phpunit"
+                run: "vendor/bin/phpunit --coverage-clover=.build/logs/clover.xml"
+
+            -   name: "Send code coverage report to Codecov.io"
+                env:
+                    CODECOV_TOKEN: "${{ secrets.CODECOV_TOKEN }}"
+                run: "bash <(curl -s https://codecov.io/bash)"
