@@ -1,9 +1,10 @@
 # Sylius Variant Link Plugin
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Latest Version][ico-version]][link-packagist]
+[![Latest Unstable Version][ico-unstable-version]][link-packagist]
 [![Software License][ico-license]](LICENSE)
-[![Build Status][ico-travis]][link-travis]
-[![Quality Score][ico-code-quality]][link-code-quality]
+[![Build Status][ico-github-actions]][link-github-actions]
+[![Code Coverage][ico-code-coverage]][link-code-coverage]
 
 In a standard Sylius shop it is not possible to link directly to variants. That problem is what this plugin solves.
 
@@ -233,11 +234,12 @@ Now define the service:
 
 Notice that if you're using autowiring you only need the aliases.
 
-[ico-version]: https://img.shields.io/packagist/v/setono/sylius-variant-link-plugin.svg
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
-[ico-travis]: https://travis-ci.com/Setono/SyliusVariantLinkPlugin.svg?branch=master
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/Setono/SyliusVariantLinkPlugin.svg
+[ico-version]: https://poser.pugx.org/setono/sylius-variant-link-plugin/v/stable
+[ico-unstable-version]: https://poser.pugx.org/setono/sylius-variant-link-plugin/v/unstable
+[ico-license]: https://poser.pugx.org/setono/sylius-variant-link-plugin/license
+[ico-github-actions]: https://github.com/Setono/SyliusVariantLinkPlugin/workflows/build/badge.svg
+[ico-code-coverage]: https://codecov.io/gh/Setono/SyliusVariantLinkPlugin/branch/master/graph/badge.svg
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-variant-link-plugin
-[link-travis]: https://travis-ci.com/Setono/SyliusVariantLinkPlugin
-[link-code-quality]: https://scrutinizer-ci.com/g/Setono/SyliusVariantLinkPlugin
+[link-github-actions]: https://github.com/Setono/SyliusVariantLinkPlugin/actions
+[link-code-coverage]: https://codecov.io/gh/Setono/SyliusVariantLinkPlugin
