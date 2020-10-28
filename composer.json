@@ -29,6 +29,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^1.12",
+        "doctrine/orm": "^2.7",
         "phpspec/phpspec": "^6.1",
         "phpunit/phpunit": "^8.5",
         "roave/security-advisories": "dev-master",
