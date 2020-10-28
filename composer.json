@@ -12,7 +12,6 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
-        "doctrine/doctrine-bundle": "^1.12",
         "psr/link": "^1.0",
         "sylius/core": "^1.0",
         "sylius/product": "^1.0",
@@ -29,6 +28,7 @@
         "webmozart/assert": "^1.9"
     },
     "require-dev": {
+        "doctrine/doctrine-bundle": "^1.12",
         "phpspec/phpspec": "^6.1",
         "phpunit/phpunit": "^8.5",
         "roave/security-advisories": "dev-master",
@@ -38,6 +38,7 @@
         "symfony/debug-bundle": "^5.0",
         "symfony/dotenv": "^5.0",
         "symfony/intl": "^4.4 || ^5.0",
+        "symfony/swiftmailer-bundle": "^3.5",
         "symfony/web-profiler-bundle": "^5.0"
     },
     "config": {
