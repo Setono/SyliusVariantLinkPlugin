@@ -15,6 +15,10 @@
     "string",
     "true",
     "void",
-    "Sylius\\Bundle\\CoreBundle\\Application\\SyliusPluginTrait"
+    "Sylius\\Bundle\\CoreBundle\\Application\\SyliusPluginTrait",
+    "Sylius\\Component\\Core\\Model\\ProductInterface",
+    "Sylius\\Component\\Product\\Model\\ProductInterface",
+    "Sylius\\Component\\Product\\Model\\ProductVariantInterface",
+    "Sylius\\Component\\Product\\Resolver\\ProductVariantResolverInterface"
   ]
 }

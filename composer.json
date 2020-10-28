@@ -18,11 +18,13 @@
         "sylius/resource-bundle": "^1.6",
         "symfony/config": "^4.4 || ^5.0",
         "symfony/dependency-injection": "^4.4 || ^5.0",
+        "symfony/event-dispatcher": "^4.4 || ^5.0",
         "symfony/http-foundation": "^4.4 || ^5.0",
         "symfony/http-kernel": "^4.4 || ^5.0",
         "symfony/routing": "^4.4 || ^5.0",
         "symfony/web-link": "^4.4 || ^5.0",
         "thecodingmachine/safe": "^1.0",
+        "twig/twig": "^2.0 || ^3.0",
         "webmozart/assert": "^1.9"
     },
     "require-dev": {
