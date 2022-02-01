@@ -33,7 +33,7 @@
         "roave/security-advisories": "dev-master",
         "setono/code-quality-pack": "^1.4",
         "setono/sylius-behat-pack": "^0.1",
-        "sylius/sylius": "~1.7.0",
+        "sylius/sylius": "~1.7.0 || ~1.10.0",
         "symfony/debug-bundle": "^5.0",
         "symfony/dotenv": "^5.0",
         "symfony/intl": "^4.4 || ^5.0",
