@@ -1,7 +1,6 @@
 # Sylius Variant Link Plugin
 
 [![Latest Version][ico-version]][link-packagist]
-[![Latest Unstable Version][ico-unstable-version]][link-packagist]
 [![Software License][ico-license]](LICENSE)
 [![Build Status][ico-github-actions]][link-github-actions]
 [![Code Coverage][ico-code-coverage]][link-code-coverage]
@@ -241,7 +240,6 @@ Now define the service:
 Notice that if you're using autowiring you only need the aliases.
 
 [ico-version]: https://poser.pugx.org/setono/sylius-variant-link-plugin/v/stable
-[ico-unstable-version]: https://poser.pugx.org/setono/sylius-variant-link-plugin/v/unstable
 [ico-license]: https://poser.pugx.org/setono/sylius-variant-link-plugin/license
 [ico-github-actions]: https://github.com/Setono/SyliusVariantLinkPlugin/workflows/build/badge.svg
 [ico-code-coverage]: https://codecov.io/gh/Setono/SyliusVariantLinkPlugin/branch/master/graph/badge.svg
