@@ -1,7 +1,8 @@
 {
     "name": "setono/sylius-variant-link-plugin",
-    "type": "sylius-plugin",
     "description": "Sylius plugin that makes it possible to link directly to variants",
+    "license": "MIT",
+    "type": "sylius-plugin",
     "keywords": [
         "sylius",
         "sylius-plugin",
@@ -9,7 +10,6 @@
         "variants",
         "link"
     ],
-    "license": "MIT",
     "require": {
         "php": ">=7.4",
         "psr/link": "^1.0",
@@ -36,15 +36,7 @@
         "symfony/intl": "^4.4 || ^5.4",
         "symfony/web-profiler-bundle": "^4.4 || ^5.4"
     },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": false,
-            "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": false,
-            "symfony/thanks": false
-        }
-    },
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Setono\\SyliusVariantLinkPlugin\\": "src/"
@@ -58,7 +50,15 @@
             "tests/Application/Kernel.php"
         ]
     },
-    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false,
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": false,
+            "symfony/thanks": false
+        },
+        "sort-packages": true
+    },
     "scripts": {
         "all": [
             "@checks",
