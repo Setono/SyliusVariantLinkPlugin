@@ -12,12 +12,9 @@ use Twig\TwigFunction;
 
 final class ProductVariantLinkExtension extends AbstractExtension
 {
-    /** @var ProductVariantUrlGeneratorInterface */
-    private $productVariantUrlGenerator;
-
-    public function __construct(ProductVariantUrlGeneratorInterface $productVariantUrlGenerator)
-    {
-        $this->productVariantUrlGenerator = $productVariantUrlGenerator;
+    public function __construct(
+        private ProductVariantUrlGeneratorInterface $productVariantUrlGenerator,
+    ) {
     }
 
     public function getFunctions(): array
@@ -36,7 +33,9 @@ final class ProductVariantLinkExtension extends AbstractExtension
     public function url(ProductVariantInterface $productVariant, array $parameters = []): string
     {
         return $this->productVariantUrlGenerator->generate(
-            $productVariant, $parameters, UrlGeneratorInterface::ABSOLUTE_URL
+            $productVariant,
+            $parameters,
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
 }

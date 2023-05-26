@@ -8,12 +8,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 trait VariantIdentifierTrait
 {
-    /** @var RequestStack */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     private function hasVariantIdentifier(): bool
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (null === $request) {
             return false;
         }
@@ -23,7 +22,7 @@ trait VariantIdentifierTrait
 
     public function getVariantIdentifier(): string
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (null === $request) {
             return '';
         }

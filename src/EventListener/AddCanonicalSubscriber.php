@@ -19,19 +19,14 @@ final class AddCanonicalSubscriber implements EventSubscriberInterface
 {
     use VariantIdentifierTrait;
 
-    /** @var RouterInterface */
-    private $router;
-
-    /** @var EvolvableLinkProviderInterface */
-    private $linkProvider;
+    private EvolvableLinkProviderInterface|GenericLinkProvider $linkProvider;
 
     public function __construct(
         RequestStack $requestStack,
-        RouterInterface $router,
-        EvolvableLinkProviderInterface $linkProvider = null
+        private RouterInterface $router,
+        EvolvableLinkProviderInterface $linkProvider = null,
     ) {
         $this->requestStack = $requestStack;
-        $this->router = $router;
         $this->linkProvider = $linkProvider ?? new GenericLinkProvider();
     }
 
@@ -44,7 +39,7 @@ final class AddCanonicalSubscriber implements EventSubscriberInterface
 
     public function onShow(): void
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (null === $request) {
             return;
         }
