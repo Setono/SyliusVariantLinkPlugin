@@ -44,7 +44,7 @@ final class AddCanonicalSubscriber implements EventSubscriberInterface
 
     public function onShow(): void
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (null === $request) {
             return;
         }

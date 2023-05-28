@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Setono\SyliusVariantLinkPlugin\EventListener;
 
-use Safe\Exceptions\StringsException;
-use function Safe\sprintf;
 use Setono\SyliusVariantLinkPlugin\Request\VariantIdentifierTrait;
 use Setono\SyliusVariantLinkPlugin\Resolver\ProductVariantFromIdentifierResolverInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -45,9 +43,6 @@ final class VariantExistsSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @throws StringsException
-     */
     public function onShow(ResourceControllerEvent $event): void
     {
         $product = $event->getSubject();
