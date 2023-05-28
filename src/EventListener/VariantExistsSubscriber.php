@@ -67,7 +67,8 @@ final class VariantExistsSubscriber implements EventSubscriberInterface
         if (null === $productVariant) {
             throw new NotFoundHttpException(sprintf(
                 'The product %s does not have a variant identified by %s',
-                $product->getCode(), $identifier
+                $product->getCode(),
+                $identifier
             ));
         }
     }

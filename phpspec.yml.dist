@@ -1,4 +1,0 @@
-suites:
-    main:
-        namespace: Setono\SyliusVariantLinkPlugin
-        psr4_prefix: Setono\SyliusVariantLinkPlugin

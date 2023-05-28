@@ -27,7 +27,7 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -37,7 +37,7 @@ jobs:
                     coverage: "none"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
@@ -71,10 +71,10 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2.3.2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
-                uses: "shivammathur/setup-php@2.5.0"
+                uses: "shivammathur/setup-php@v2"
                 with:
                     coverage: "none"
                     extensions: "${{ env.PHP_EXTENSIONS }}"
@@ -82,7 +82,7 @@ jobs:
                     tools: "composer-require-checker, composer-unused"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
@@ -107,7 +107,7 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -117,7 +117,7 @@ jobs:
                     coverage: "none"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
@@ -140,7 +140,7 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -150,12 +150,9 @@ jobs:
                     coverage: "none"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
-
-            -   name: "Run phpspec"
-                run: "composer phpspec"
 
             -   name: "Run phpunit"
                 run: "composer phpunit"
@@ -178,7 +175,7 @@ jobs:
                 run: "sudo /etc/init.d/mysql start"
 
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -189,13 +186,12 @@ jobs:
                     tools: "symfony"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
-            # Removed linting until this issue is fixed: https://github.com/symfony/symfony/issues/38056
-            #-   name: "Lint container"
-            #    run: "(cd tests/Application && bin/console lint:container)"
+            -   name: "Lint container"
+                run: "(cd tests/Application && bin/console lint:container)"
 
             -   name: "Create database"
                 run: "(cd tests/Application && bin/console doctrine:database:create -vvv)"
@@ -256,10 +252,10 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2.3.2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
-                uses: "shivammathur/setup-php@2.5.0"
+                uses: "shivammathur/setup-php@v2"
                 with:
                     coverage: "pcov"
                     extensions: "${{ env.PHP_EXTENSIONS }}"
@@ -269,7 +265,7 @@ jobs:
                 run: "echo \"::add-matcher::${{ runner.tool_cache }}/phpunit.json\""
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 

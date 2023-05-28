@@ -32,7 +32,9 @@ final class ProductVariantFromCodeUrlGenerator implements ProductVariantUrlGener
         ]);
 
         return $this->urlGenerator->generate(
-            'setono_sylius_variant_link_shop_product_variant_show', $parameters, $referenceType
+            'setono_sylius_variant_link_shop_product_variant_show',
+            $parameters,
+            $referenceType
         );
     }
 }

@@ -36,7 +36,9 @@ final class ProductVariantLinkExtension extends AbstractExtension
     public function url(ProductVariantInterface $productVariant, array $parameters = []): string
     {
         return $this->productVariantUrlGenerator->generate(
-            $productVariant, $parameters, UrlGeneratorInterface::ABSOLUTE_URL
+            $productVariant,
+            $parameters,
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
 }

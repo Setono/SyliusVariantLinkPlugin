@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Setono\SyliusVariantLinkPlugin\Behat\Context\Ui\Shop;
@@ -29,7 +30,7 @@ final class ProductVariantContext implements Context
         $this->showPage->open([
             'slug' => $product->getTranslation($localeCode)->getSlug(),
             'variant_identifier' => $productVariant->getCode(),
-            '_locale' => $localeCode
+            '_locale' => $localeCode,
         ]);
     }
 }
