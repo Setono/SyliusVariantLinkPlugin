@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 trait VariantIdentifierTrait
 {
-    private RequestStack $requestStack;
+    /** @var RequestStack */
+    private $requestStack;
 
     private function hasVariantIdentifier(): bool
     {

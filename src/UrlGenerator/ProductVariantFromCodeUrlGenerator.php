@@ -10,9 +10,12 @@ use Webmozart\Assert\Assert;
 
 final class ProductVariantFromCodeUrlGenerator implements ProductVariantUrlGeneratorInterface
 {
-    public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
-    ) {
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function generate(
@@ -24,14 +27,12 @@ final class ProductVariantFromCodeUrlGenerator implements ProductVariantUrlGener
         Assert::notNull($product);
 
         $parameters = array_merge($parameters, [
-            'slug'               => $product->getSlug(),
+            'slug' => $product->getSlug(),
             'variant_identifier' => $productVariant->getCode(),
         ]);
 
         return $this->urlGenerator->generate(
-            'setono_sylius_variant_link_shop_product_variant_show',
-            $parameters,
-            $referenceType
+            'setono_sylius_variant_link_shop_product_variant_show', $parameters, $referenceType
         );
     }
 }

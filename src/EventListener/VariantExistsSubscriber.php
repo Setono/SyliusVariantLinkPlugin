@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Setono\SyliusVariantLinkPlugin\EventListener;
 
-use Safe\Exceptions\StringsException;
 use Setono\SyliusVariantLinkPlugin\Request\VariantIdentifierTrait;
 use Setono\SyliusVariantLinkPlugin\Resolver\ProductVariantFromIdentifierResolverInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -26,10 +25,14 @@ final class VariantExistsSubscriber implements EventSubscriberInterface
 {
     use VariantIdentifierTrait;
 
+    /** @var ProductVariantFromIdentifierResolverInterface */
+    private $productVariantResolver;
+
     public function __construct(
-        private ProductVariantFromIdentifierResolverInterface $productVariantResolver,
-        RequestStack $requestStack,
+        ProductVariantFromIdentifierResolverInterface $productVariantResolver,
+        RequestStack $requestStack
     ) {
+        $this->productVariantResolver = $productVariantResolver;
         $this->requestStack = $requestStack;
     }
 
@@ -62,13 +65,10 @@ final class VariantExistsSubscriber implements EventSubscriberInterface
         $productVariant = $this->productVariantResolver->resolve($product, $identifier);
 
         if (null === $productVariant) {
-            throw new NotFoundHttpException(
-                sprintf(
-                    'The product %s does not have a variant identified by %s',
-                    $product->getCode(),
-                    $identifier
-                )
-            );
+            throw new NotFoundHttpException(sprintf(
+                'The product %s does not have a variant identified by %s',
+                $product->getCode(), $identifier
+            ));
         }
     }
 }

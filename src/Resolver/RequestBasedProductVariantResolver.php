@@ -15,11 +15,19 @@ final class RequestBasedProductVariantResolver implements BaseProductVariantReso
 {
     use VariantIdentifierTrait;
 
+    /** @var BaseProductVariantResolverInterface */
+    private $decoratedProductVariantResolver;
+
+    /** @var ProductVariantFromIdentifierResolverInterface */
+    private $productVariantFromIdentifierResolver;
+
     public function __construct(
-        private BaseProductVariantResolverInterface $decoratedProductVariantResolver,
-        private ProductVariantFromIdentifierResolverInterface $productVariantFromIdentifierResolver,
-        RequestStack $requestStack,
+        BaseProductVariantResolverInterface $decoratedProductVariantResolver,
+        ProductVariantFromIdentifierResolverInterface $productVariantFromIdentifierResolver,
+        RequestStack $requestStack
     ) {
+        $this->decoratedProductVariantResolver = $decoratedProductVariantResolver;
+        $this->productVariantFromIdentifierResolver = $productVariantFromIdentifierResolver;
         $this->requestStack = $requestStack;
     }
 
