@@ -2,7 +2,7 @@ setono_sylius_variant_link_shop_product_variant_show:
     path: /products/{slug}/{variant_identifier}
     methods: [GET]
     defaults:
-        _controller: sylius.controller.product:showAction
+        _controller: sylius.controller.product::showAction
         _sylius:
             template: "@SyliusShop/Product/show.html.twig"
             repository:
